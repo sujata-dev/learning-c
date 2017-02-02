@@ -10,11 +10,12 @@ struct node
 struct node *create(struct node *start);
 void display(struct node *start);
 struct node *insertempty(struct node *start,int data);
-struct node *insertend(struct node *start,int data);
 struct node *insertbeg(struct node *start,int data);
+struct node *insertend(struct node *start,int data);
 struct node *insertafter(struct node *start,int data,int item);
 struct node *insertbefore(struct node *start,int data,int item);
 struct node *del(struct node *start,int data);
+struct node *reverse(struct node *start);
 int main()
 {
     struct node *start=NULL;
@@ -74,6 +75,9 @@ int main()
                     start=del(start,data);
                     display(start);
                     break;
+            case 9: start=reverse(start);
+                    display(start);
+                    break;
             case 10:    exit(1);
                         break;
             default:    printf("\nWrong choice: ");
@@ -127,6 +131,17 @@ struct node *insertempty(struct node *start,int data)
     start=tmp;
     return start;
 }
+struct node *insertbeg(struct node *start,int data)
+{
+    struct node *tmp;
+    tmp=(struct node*)malloc(sizeof(struct node));
+    tmp->info=data;
+    tmp->prev=NULL;
+    tmp->next=start;
+    start->prev=tmp;
+    start=tmp;
+    return start;
+}
 struct node *insertend(struct node *start,int data)
 {
     struct node *p,*tmp;
@@ -138,17 +153,6 @@ struct node *insertend(struct node *start,int data)
     p->next=tmp;
     tmp->next=NULL;
     tmp->prev=p;
-    return start;
-}
-struct node *insertbeg(struct node *start,int data)
-{
-    struct node *tmp;
-    tmp=(struct node*)malloc(sizeof(struct node));
-    tmp->info=data;
-    tmp->prev=NULL;
-    tmp->next=start;
-    start->prev=tmp;
-    start=tmp;
     return start;
 }
 struct node *insertafter(struct node *start,int data,int item)
@@ -258,5 +262,20 @@ struct node *del(struct node *start,int data)
         return start;
     }
     printf("%d not found in list\n",data);
+    return start;
+}
+struct node *reverse(struct node *start)
+{
+    struct node *p,*tmp=NULL;
+    p=start;
+    while(p!=NULL)
+    {
+        tmp=p->prev;
+        p->prev=p->next;
+        p->next=tmp;
+        p=p->prev;
+    }
+    if(tmp!=NULL)
+        start=tmp->prev;
     return start;
 }
