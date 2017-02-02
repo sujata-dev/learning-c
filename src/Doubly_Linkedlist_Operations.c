@@ -14,6 +14,7 @@ struct node *insertend(struct node *start,int data);
 struct node *insertbeg(struct node *start,int data);
 struct node *insertafter(struct node *start,int data,int item);
 struct node *insertbefore(struct node *start,int data,int item);
+struct node *del(struct node *start,int data);
 int main()
 {
     struct node *start=NULL;
@@ -66,6 +67,11 @@ int main()
                     printf("\nEnter element before which to insert: ");
                     scanf("%d",&item);
                     start=insertbefore(start,data,item);
+                    display(start);
+                    break;
+            case 8: printf("\nEnter element to be deleted: ");
+                    scanf("%d",&data);
+                    start=del(start,data);
                     display(start);
                     break;
             case 10:    exit(1);
@@ -200,5 +206,57 @@ struct node *insertbefore(struct node *start,int data,int item)
         p=p->next;
     }
     printf("%d not present in list\n",item);
+    return start;
+}
+struct node *del(struct node *start,int data)
+{
+    struct node *tmp;
+    if(start==NULL)
+    {
+        printf("List is empty\n");
+        return start;
+    }
+    if(start->next==NULL)
+    {
+        if(start->info==data)
+        {
+            tmp=start;
+            start=NULL;
+            free(tmp);
+            return start;
+        }
+        else
+        {
+            printf("%d not found in list\n",data);
+            return start;
+        }
+    }
+    if(start->info==data)
+    {
+        tmp=start;
+        start=start->next;
+        start->prev=NULL;
+        free(tmp);
+        return start;
+    }
+    tmp=start->next;
+    while(tmp->next!=NULL)
+    {
+        if(tmp->info==data)
+        {
+            tmp->prev->next=tmp->next;
+            tmp->next->prev=tmp->prev;
+            free(tmp);
+            return start;
+        }
+        tmp=tmp->next;
+    }
+    if(tmp->info==data)
+    {
+        tmp->prev->next=NULL;
+        free(tmp);
+        return start;
+    }
+    printf("%d not found in list\n",data);
     return start;
 }
