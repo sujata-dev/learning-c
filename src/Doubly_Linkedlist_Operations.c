@@ -8,12 +8,13 @@ struct node
     struct node *next;
 };
 struct node *create(struct node *start);
+void display(struct node *start);
 struct node *insertempty(struct node *start,int data);
 struct node *insertend(struct node *start,int data);
 int main()
 {
     struct node *start=NULL;
-    int ch;
+    int ch,data;
     while(1)
     {
         printf("\n1) Create List");
@@ -31,6 +32,19 @@ int main()
         switch(ch)
         {
             case 1: start=create(start);
+                    display(start);
+                    break;
+            case 2: display(start);
+                    break;
+            case 3: printf("\nEnter element to be inserted: ");
+                    scanf("%d",&data);
+                    start=insertempty(start,data);
+                    display(start);
+                    break;
+            case 5: printf("\nEnter element to be inserted: ");
+                    scanf("%d",&data);
+                    start=insertend(start,data);
+                    display(start);
                     break;
             case 10:    exit(1);
                         break;
@@ -57,6 +71,23 @@ struct node *create(struct node *start)
         start=insertend(start,data);
     }
     return start;
+}
+void display(struct node *start)
+{
+    struct node *p;
+    if(start==NULL)
+    {
+        printf("List is empty");
+        return;
+    }
+    p=start;
+    printf("\nList: ");
+    while(p!=NULL)
+    {
+        printf("%d->",p->info);
+        p=p->next;
+    }
+    printf("NULL\n");
 }
 struct node *insertempty(struct node *start,int data)
 {
