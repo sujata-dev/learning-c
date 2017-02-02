@@ -11,10 +11,13 @@ struct node *create(struct node *start);
 void display(struct node *start);
 struct node *insertempty(struct node *start,int data);
 struct node *insertend(struct node *start,int data);
+struct node *insertbeg(struct node *start,int data);
+struct node *insertafter(struct node *start,int data,int item);
+struct node *insertbefore(struct node *start,int data,int item);
 int main()
 {
     struct node *start=NULL;
-    int ch,data;
+    int ch,data,item;
     while(1)
     {
         printf("\n1) Create List");
@@ -41,9 +44,28 @@ int main()
                     start=insertempty(start,data);
                     display(start);
                     break;
+            case 4: printf("\nEnter element to be inserted: ");
+                    scanf("%d",&data);
+                    start=insertbeg(start,data);
+                    display(start);
+                    break;
             case 5: printf("\nEnter element to be inserted: ");
                     scanf("%d",&data);
                     start=insertend(start,data);
+                    display(start);
+                    break;
+            case 6: printf("\nEnter element to be inserted: ");
+                    scanf("%d",&data);
+                    printf("\nEnter element after which to insert: ");
+                    scanf("%d",&item);
+                    start=insertafter(start,data,item);
+                    display(start);
+                    break;
+            case 7: printf("\nEnter element to be inserted: ");
+                    scanf("%d",&data);
+                    printf("\nEnter element before which to insert: ");
+                    scanf("%d",&item);
+                    start=insertbefore(start,data,item);
                     display(start);
                     break;
             case 10:    exit(1);
@@ -110,5 +132,73 @@ struct node *insertend(struct node *start,int data)
     p->next=tmp;
     tmp->next=NULL;
     tmp->prev=p;
+    return start;
+}
+struct node *insertbeg(struct node *start,int data)
+{
+    struct node *tmp;
+    tmp=(struct node*)malloc(sizeof(struct node));
+    tmp->info=data;
+    tmp->prev=NULL;
+    tmp->next=start;
+    start->prev=tmp;
+    start=tmp;
+    return start;
+}
+struct node *insertafter(struct node *start,int data,int item)
+{
+    struct node *p,*tmp;
+    tmp=(struct node*)malloc(sizeof(struct node));
+    tmp->info=data;
+    p=start;
+    while(p!=NULL)
+    {
+        if(p->info==item)
+        {
+            tmp->prev=p;
+            tmp->next=p->next;
+            if(p->next!=NULL)
+                p->next->prev=tmp;
+            p->next=tmp;
+            return start;
+        }
+        p=p->next;
+    }
+    printf("%d not present in list\n",item);
+    return start;
+}
+struct node *insertbefore(struct node *start,int data,int item)
+{
+    struct node *p,*tmp;
+    if(start==NULL)
+    {
+        printf("List is empty\n");
+        return start;
+    }
+    if(item==start->info)
+    {
+        tmp=(struct node*)malloc(sizeof(struct node));
+        tmp->info=data;
+        tmp->prev=NULL;
+        tmp->next=start;
+        start=tmp;
+        return start;
+    }
+    p=start;
+    while(p!=NULL)
+    {
+        if(p->info==item)
+        {
+            tmp=(struct node*)malloc(sizeof(struct node));
+            tmp->info=data;
+            tmp->prev=p->prev;
+            tmp->next=p;
+            p->prev->next=tmp;
+            p->prev=tmp;
+            return start;
+        }
+        p=p->next;
+    }
+    printf("%d not present in list\n",item);
     return start;
 }
