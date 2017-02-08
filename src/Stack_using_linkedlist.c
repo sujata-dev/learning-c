@@ -36,7 +36,12 @@ int main()
                     push(item);
                     display();
                     break;
+            case 3: pop();
+                    display();
+                    break;
             case 4: display();
+                    break;
+            case 5: count();
                     break;
             case 6: exit(0);
                     break;
@@ -82,4 +87,19 @@ void empty(struct node *top)
 {
     if(top==NULL)
         printf("\nUnderflow");
+}
+void pop()
+{
+    top1=top;
+    empty(top1);
+    if (top1!=NULL)
+        top1=top1->ptr;
+    printf("\nPopped value: %d\n",top->info);
+    free(top);
+    top=top1;
+    cnt--;
+}
+void count()
+{
+    printf("\nNumber of elements in stack: %d\n",cnt);
 }
