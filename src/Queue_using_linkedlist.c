@@ -10,6 +10,8 @@ void enqueue(int item);
 void empty(struct node *front,struct node *rear);
 void display();
 void create();
+void dequeue();
+void count();
 int cnt=0;
 int main()
 {
@@ -33,8 +35,12 @@ int main()
                     enqueue(item);
                     display();
                     break;
+            case 3: dequeue();
+                    display();
                     break;
             case 4: display();
+                    break;
+            case 5: count();
                     break;
             case 6: exit(0);
             default:    printf("\nWrong choice: ");
@@ -83,4 +89,35 @@ void empty(struct node *front,struct node *rear)
 {
     if((front==NULL)&&(rear==NULL))
         printf("\nUnderflow");
+}
+void dequeue()
+{
+    front1=front;
+    if(front1==NULL)
+    {
+        printf("\nUnderflow");
+        return;
+    }
+    else
+    {
+        if(front1->ptr!=NULL)
+        {
+            front1=front1->ptr;
+            printf("\nDequeued value: %d",front->info);
+            free(front);
+            front = front1;
+        }
+        else
+        {
+            printf("\nDequeued value: %d",front->info);
+            free(front);
+            front=NULL;
+            rear=NULL;
+        }
+        cnt--;
+    }
+}
+void count()
+{
+    printf("\nNumber of elements in queue: %d",cnt);
 }
