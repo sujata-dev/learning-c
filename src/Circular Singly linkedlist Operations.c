@@ -13,6 +13,8 @@ void insertbeg(int data);
 void insertpos(int data,int pos);
 void del(int pos);
 void update(int item,int newitem);
+void search(int item);
+void sort();
 int main()
 {
     int ch,n,data,pos,item,newitem;
@@ -52,6 +54,13 @@ int main()
             case 5: printf("\nEnter the position to be deleted: ");
                     scanf("%d",&pos);
                     del(pos);
+                    display();
+                    break;
+            case 6: printf("\nEnter element to be searched: ");
+                    scanf("%d",&item);
+                    search(item);
+                    break;
+            case 7: sort();
                     display();
                     break;
             case 8: printf("\nEnter the item to be updated and the new item: ");
@@ -225,5 +234,64 @@ void update(int item,int newitem)
             printf("\nUpdate successful\n");
         else
             printf("\nUpdate not successful");
+    }
+}
+void search(int item)
+{
+    struct node *p=start;
+    int count=0,flag=0;
+    if(start==NULL)
+    {
+        printf("\nList is empty");
+        return;
+    }
+    else
+    {
+        while(p->link!=start)
+        {
+            if(p->info==item)
+            {
+                printf("Item found at position: %d",count+1);
+                flag=1;
+                break;
+            }
+            count++;
+            p=p->link;
+        }
+        if(flag==0)
+            printf("Item not found");
+    }
+}
+void sort()
+{
+    struct node *p=start,*next;
+    int temp;
+    if(start==NULL)
+    {
+        printf("\nList is empty");
+        return;
+    }
+    else
+    {
+        while(p->link!=start)
+        {
+            next=p->link;
+            while(next!=start)
+            {
+                if(next!=start)
+                {
+                    if(p->info > next->info)
+                    {
+                        temp=p->info;
+                        p->info=next->info;
+                        next->info=temp;
+                    }
+                }
+                else
+                    break;
+                next=next->link;
+            }
+            p=p->link;
+        }
     }
 }
