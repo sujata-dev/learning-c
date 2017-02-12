@@ -15,6 +15,7 @@ void del(int pos);
 void update(int item,int newitem);
 void search(int item);
 void sort();
+void reverse(struct node *p);
 int main()
 {
     int ch,n,data,pos,item,newitem;
@@ -67,6 +68,8 @@ int main()
                     scanf("%d %d", &item,&newitem);
                     update(item,newitem);
                     display();
+                    break;
+            case 9: reverse(start);
                     break;
             case 10:    exit(1);
                         break;
@@ -294,4 +297,26 @@ void sort()
             p=p->link;
         }
     }
+}
+void reverse(struct node *p)
+{
+    int tmp;
+    if(start==NULL)
+    {
+        printf("\nList is empty");
+        return;
+    }
+    else
+    {
+        if(p->link!=start)
+        {
+            tmp=p->info;
+            reverse(p->link);
+            printf("%d->",tmp);
+        }
+        if(p->link==start)
+            printf("%d->",p->info);
+    }
+    if(p->link==start->link)
+        printf("NULL");
 }
