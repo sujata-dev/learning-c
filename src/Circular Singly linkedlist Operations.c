@@ -9,6 +9,10 @@ struct node
 struct node *start=NULL;
 void create();
 void display();
+void insertbeg(int data);
+void insertpos(int data,int pos);
+void del(int pos);
+void update(int item,int newitem);
 int main()
 {
     int ch,n,data,pos,item,newitem;
@@ -34,6 +38,26 @@ int main()
                     display();
                     break;
             case 2: display();
+                    break;
+            case 3: printf("\nEnter element to be inserted: ");
+                    scanf("%d",&data);
+                    insertbeg(data);
+                    display();
+                    break;
+            case 4: printf("\nEnter element and the position to be inserted: ");
+                    scanf("%d %d",&data,&pos);
+                    insertpos(data,pos);
+                    display();
+                    break;
+            case 5: printf("\nEnter the position to be deleted: ");
+                    scanf("%d",&pos);
+                    del(pos);
+                    display();
+                    break;
+            case 8: printf("\nEnter the item to be updated and the new item: ");
+                    scanf("%d %d", &item,&newitem);
+                    update(item,newitem);
+                    display();
                     break;
             case 10:    exit(1);
                         break;
@@ -84,5 +108,122 @@ void display()
             p=p->link;
         }
         printf("%d->NULL\n",p->info);
+    }
+}
+void insertbeg(int data)
+{
+    struct node *p=start,*tmp;
+    tmp=(struct node*)malloc(sizeof(struct node));
+    tmp->info=data;
+    while(p->link!=start)
+        p=p->link;
+    p->link=tmp;
+    tmp->link=start;
+    start=tmp;
+}
+void insertpos(int data,int pos)
+{
+    struct node *p,*p1,*p2,*tmp;
+    int c=1,count=1;
+    tmp=(struct node*)malloc(sizeof(struct node));
+    if(start==NULL)
+    {
+        printf("\nList is empty");
+        return;
+    }
+    tmp->info=data;
+    if(pos==1)
+    {
+        p1=start;
+        while(p1->link!=start)
+            p1=p1->link;
+        p1->link=tmp;
+        tmp->link=start;
+        start=tmp;
+    }
+    else
+    {
+        p1=start;
+        p=start;
+        while(p->link!=start)
+        {
+            count++;
+            p=p->link;
+        }
+        count++;
+        if (pos>count)
+        {
+            printf("There are less than %d elements\n",pos);
+            return;
+        }
+        while(c<pos)
+        {
+            p2=p1;
+            p1=p1->link;
+            c++;
+        }
+        tmp->link=p1;
+        p2->link=tmp;
+    }
+}
+void del(int pos)
+{
+    struct node *p1=start,*tmp=start;
+    int c=1;
+    if(start==NULL)
+    {
+        printf("\nList is empty");
+        return;
+    }
+    if(pos==1)
+    {
+        while(p1->link!=start)
+            p1=p1->link;
+        start=tmp->link;
+        p1->link=start;
+        free(tmp);
+    }
+    else
+    {
+        while(c<pos)
+        {
+            tmp=p1;
+            p1=p1->link;
+            c++;
+        }
+        tmp->link=p1->link;
+        free(p1);
+    }
+}
+void update(int item,int newitem)
+{
+    struct node *p=start;
+    int flag=0;
+    if(start==NULL)
+    {
+        printf("\nList is empty");
+        return;
+    }
+    else
+    {
+        while(p->link!=start)
+        {
+            if(p->info==item)
+            {
+                p->info=newitem;
+                flag=1;
+                break;
+            }
+            p=p->link;
+        }
+        if(p->info==item)
+        {
+            p->info=newitem;
+            flag=1;
+        }
+        if(flag==1)
+            printf("\nUpdate successful\n");
+        else
+            printf("\nUpdate not successful");
     }
 }
