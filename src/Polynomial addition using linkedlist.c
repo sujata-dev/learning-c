@@ -18,10 +18,13 @@ int main()
     start1=input(start1);
     printf("Polynomial2:\n");
     start2=input(start2);
-    printf("Polynomial1 is:");
+    start3=add(start1,start2);
+    printf("\nPolynomial1 is:");
     display(start1);
     printf("Polynomial2 is:");
     display(start2);
+    printf("Added Polynomial is:");
+    display(start3);
 }
 struct node *input(struct node *start)
 {
@@ -75,4 +78,85 @@ void display(struct node *ptr)
         ptr=ptr->link;
     }
     printf("\b \b\n\n");
+}
+struct node *add(struct node *p1,struct node *p2)
+{
+    struct node *start3=NULL,*p3,*tmp;
+    if(p1==NULL && p2==NULL)
+        return start3;
+    while(p1!=NULL && p2!=NULL)
+    {
+        tmp=malloc(sizeof(struct node));
+        if(start3==NULL)
+        {
+            start3=tmp;
+            p3=start3;
+        }
+        else
+        {
+            p3->link=tmp;
+            p3=p3->link;
+        }
+        if(p1->exp > p2->exp)
+        {
+            tmp->coef=p1->coef;
+            tmp->exp=p1->exp;
+            p1=p1->link;
+        }
+        else
+        {
+            if(p2->exp > p1->exp)
+            {
+                tmp->coef=p2->coef;
+                tmp->exp=p2->exp;
+                p2=p2->link;
+            }
+            else
+            {
+                if(p1->exp == p2->exp)
+                {
+                    tmp->coef=p1->coef + p2->coef;
+                    tmp->exp=p1->exp;
+                    p1=p1->link;
+                    p2=p2->link;
+                }
+            }
+        }
+    }
+    while(p1!=NULL)
+    {
+        tmp=malloc(sizeof(struct node));
+        tmp->coef=p1->coef;
+        tmp->exp=p1->exp;
+        if(start3==NULL)
+        {
+            start3=tmp;
+            p3=start3;
+        }
+        else
+        {
+            p3->link=tmp;
+            p3=p3->link;
+        }
+        p1=p1->link;
+    }
+    while(p2!=NULL)
+    {
+        tmp=malloc(sizeof(struct node));
+        tmp->coef=p2->coef;
+        tmp->exp=p2->exp;
+        if(start3==NULL)
+        {
+            start3=tmp;
+            p3=start3;
+        }
+        else
+        {
+            p3->link=tmp;
+            p3=p3->link;
+        }
+        p2=p2->link;
+    }
+    p3->link=NULL;
+    return start3;
 }
